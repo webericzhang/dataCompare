@@ -78,12 +78,9 @@ var oldData = [
 
 function compare(oldData, newData){
     var result={added:[],deleted:[],modified:[]};
-    var oldIndex = oldData.length - 1,
-        oldNames = ""; //for added
 
     oldData.forEach(function(oItem, oIndex) {
         var oldFullname = oItem.firstName + oItem.lastName;
-        oldNames += oItem.firstName + oItem.lastName;
         newData.forEach(function(nItem, nIndex) {
             var newFullname = nItem.firstName+nItem.lastName;
             if (JSON.stringify(oItem)===JSON.stringify(nItem)) {
@@ -102,11 +99,10 @@ function compare(oldData, newData){
                 newData.splice(nIndex, 1);
             }
             else if(nIndex===newData.length - 1) {result.deleted.push(oItem);}
-            else if(oIndex===oldIndex && oldNames.indexOf(newFullname)===-1) {
-                result.added.push(nItem);
-            }
         });
     });
+
+    result.added = newData;
 
     return result;
 }
