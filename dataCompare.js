@@ -78,8 +78,7 @@ var oldData = [
 
 function compare(oldData, newData){
     var result={added:[],deleted:[],modified:[]};
-    var newIndex = newData.length - 1,
-        oldIndex = oldData.length - 1,
+    var oldIndex = oldData.length - 1,
         oldNames = ""; //for added
 
     oldData.forEach(function(oItem, oIndex) {
@@ -88,6 +87,7 @@ function compare(oldData, newData){
         newData.forEach(function(nItem, nIndex) {
             var newFullname = nItem.firstName+nItem.lastName;
             if (JSON.stringify(oItem)===JSON.stringify(nItem)) {
+                newData.splice(nIndex, 1);
             }
             else if(oldFullname === newFullname) {
                 var temp = {};
@@ -99,13 +99,15 @@ function compare(oldData, newData){
                     }
                 }
                 result.modified.push(temp);
+                newData.splice(nIndex, 1);
             }
-            else if(nIndex===newIndex) {result.deleted.push(oItem);}
+            else if(nIndex===newData.length - 1) {result.deleted.push(oItem);}
             else if(oIndex===oldIndex && oldNames.indexOf(newFullname)===-1) {
                 result.added.push(nItem);
             }
         });
     });
+
     return result;
 }
 
