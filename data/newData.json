@@ -1,0 +1,38 @@
+[
+{
+  "firstName": "Tom",
+  "lastName": "Zhang",
+  "ext": "1001",
+  "cell": "416-000-0000",
+  "alt": "416-456-4567",
+  "title": "Manager",
+  "email": "tomz@jsrocks.com"
+},
+{
+"firstName": "Eric",
+"lastName": "Zhang",
+"ext": "1003",
+"cell": "647-222-2222",
+"alt": "416-333-3333",
+"title": "Developer",
+"email": "webericzhang@gmail.com"
+},
+{
+"firstName": "Peter",
+"lastName": "Wang",
+"ext": "1003",
+"cell": "647-222-2222",
+"alt": "416-333-3333",
+"title": "QA",
+"email": "peterw@jsrocks.com"
+},
+{
+"firstName": "Jennifer",
+"lastName": "Zhu",
+"ext": "1009",
+"cell": "416-555-4579",
+"alt": "416-456-4567",
+"title": "Accountant",
+"email": "Jennifer@jsrocks.com"
+}
+]
