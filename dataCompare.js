@@ -78,7 +78,9 @@ var oldData = [
 
 function compare(oldData, newData){
     var result={added:[],deleted:[],modified:[]};
-    var oldNames = ""; //for added
+    var newIndex = newData.length - 1,
+        oldIndex = oldData.length - 1,
+        oldNames = ""; //for added
 
     oldData.forEach(function(oItem, oIndex) {
         var oldFullname = oItem.firstName + oItem.lastName;
@@ -98,8 +100,8 @@ function compare(oldData, newData){
                 }
                 result.modified.push(temp);
             }
-            else if(nIndex===newData.length-1){result.deleted.push(oldFullname);}
-            else if(oIndex===oldData.length-1 && oldNames.indexOf(newFullname)===-1) {
+            else if(nIndex===newIndex) {result.deleted.push(oldFullname);}
+            else if(oIndex===oldIndex && oldNames.indexOf(newFullname)===-1) {
                 result.added.push(newFullname);
             }
         });
