@@ -78,16 +78,14 @@ var oldData = [
 
 function compare(oldData, newData){
     var result={added:[],deleted:[],modified:[]};
-    var oldNames = "",
-        newNames = [];
+    var oldNames = ""; //for added
 
-    oldData.forEach(function(oItem,index) {
+    oldData.forEach(function(oItem, oIndex) {
         var isExist = false;
         var oldFullname = oItem.firstName + oItem.lastName;
         oldNames += oItem.firstName + oItem.lastName;
-        newData.forEach(function(nItem){
+        newData.forEach(function(nItem, nIndex) {
             var newFullname = nItem.firstName+nItem.lastName;
-            if(index==0){newNames.push(newFullname);}
             if (JSON.stringify(oItem)==JSON.stringify(nItem)) {
                 isExist = true;
             }
@@ -97,22 +95,17 @@ function compare(oldData, newData){
                 temp.firstName = nItem.firstName;
                 temp.lastName = nItem.lastName;
                 for(var i in nItem) {
-                    if(nItem[i]!=oItem[i]) {
+                    if(nItem[i] != oItem[i]) {
                         temp[i] = nItem[i];
                     }
                 }
                 result.modified.push(temp);
             }
-            else {
+            if(oIndex===oldData.length-1 && oldNames.indexOf(newFullname)===-1) {
+                result.added.push(newFullname);
             }
         });
         if (!isExist){result.deleted.push(oldFullname);}
-    });
-
-    newNames.forEach(function(item){
-        if(oldNames.indexOf(item) == -1){
-            result.added.push(item);
-        }
     });
     return result;
 }
