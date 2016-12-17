@@ -100,9 +100,9 @@ function compare(oldData, newData){
                 }
                 result.modified.push(temp);
             }
-            else if(nIndex===newIndex) {result.deleted.push(oldFullname);}
+            else if(nIndex===newIndex) {result.deleted.push(oItem);}
             else if(oIndex===oldIndex && oldNames.indexOf(newFullname)===-1) {
-                result.added.push(newFullname);
+                result.added.push(nItem);
             }
         });
     });
