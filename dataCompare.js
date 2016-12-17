@@ -79,23 +79,22 @@ var oldData = [
 function compare(oldData, newData){
     var result={added:[],deleted:[],modified:[]};
 
-    oldData.forEach(function(oItem, oIndex) {
+    oldData.forEach(function(oItem) {
         var oldFullname = oItem.firstName + oItem.lastName;
         newData.forEach(function(nItem, nIndex) {
             var newFullname = nItem.firstName+nItem.lastName;
-            if (JSON.stringify(oItem)===JSON.stringify(nItem)) {
-                newData.splice(nIndex, 1);
-            }
-            else if(oldFullname === newFullname) {
+            if(oldFullname === newFullname) {
                 var temp = {};
-                temp.firstName = nItem.firstName;
-                temp.lastName = nItem.lastName;
                 for(var i in nItem) {
                     if(nItem[i] != oItem[i]) {
                         temp[i] = nItem[i];
                     }
                 }
-                result.modified.push(temp);
+                if (Object.getOwnPropertyNames(temp).length !== 0) {
+                    temp.firstName = nItem.firstName;
+                    temp.lastName = nItem.lastName;
+                    result.modified.push(temp);
+                }
                 newData.splice(nIndex, 1);
             }
             else if(nIndex===newData.length - 1) {result.deleted.push(oItem);}
