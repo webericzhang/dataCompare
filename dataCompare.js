@@ -77,7 +77,6 @@ var oldData = [
 */
 
 function compare(oldData, newData){
-    console.log(oldData);
     var result={added:[],deleted:[],modified:[]};
     var oldNames = "",
         newNames = [];
@@ -115,9 +114,7 @@ function compare(oldData, newData){
             result.added.push(item);
         }
     });
-
     return result;
-
 }
 
 var result = compare(oldData, newData);
