@@ -3,8 +3,8 @@
  */
 
 var rf=require("fs");
-var oldData=JSON.parse(rf.readFileSync("data/oldData.json","utf-8"));
-var newData=JSON.parse(rf.readFileSync("data/newData.json","utf-8"));
+//var oldData=JSON.parse(rf.readFileSync("data/oldData.json","utf-8"));
+//var newData=JSON.parse(rf.readFileSync("data/newData.json","utf-8"));
 
 /*
 var oldData = [
@@ -33,14 +33,14 @@ var oldData = [
             "cell": "647-222-2222",
             "alt": "416-333-3333",
             "title": "QA",
-            "email": "peterw@jsrocks.com"
+            "email": "jessicaz@jsrocks.com"
         }
     ],
     newData = [
         {
             "firstName": "Tom",
             "lastName": "Zhang",
-            "ext": "1001",
+            "ext": "1002",
             "cell": "416-000-0000",
             "alt": "416-456-4567",
             "title": "Manager",
@@ -71,34 +71,92 @@ var oldData = [
             "cell": "416-555-4579",
             "alt": "416-456-4567",
             "title": "Accountant",
-            "email": "Jennifer@jsrocks.com"
+            "email": "Jenniferz@jsrocks.com"
         }
     ];
 */
+
+var oldData = [
+    {
+        "firstName": "Tom",
+        "lastName": "Zhang",
+        "ext": "1001",
+        "cell": "416-000-0000",
+        "alt": "",
+        "title": "Manager",
+        "email": "tomz@jsrocks.com"
+    },
+    {
+        "firstName": "Peter",
+        "lastName": "Wang",
+        "ext": "1003",
+        "cell": "647-222-2222",
+        "alt": "416-333-3333",
+        "title": "QA",
+        "email": "peterw@jsrocks.com"
+    },
+    {
+        "firstName": "Simon",
+        "lastName": "Lee",
+        "ext": "1004",
+        "cell": "647-111-1111",
+        "alt": "416-1111-1111",
+        "title": "QA",
+        "email": "simonl@jsrocks.com"
+    }
+];
+var newData = [
+    {
+        "firstName": "Tom",
+        "lastName": "Zhang",
+        "ext": "1006",
+        "cell": "416-000-0002",
+        "alt": "416-456-4566",
+        "title": "Manager",
+        "email": "tomz@jsrocks.com"
+    },
+    {
+        "firstName": "Peter",
+        "lastName": "Wang",
+        "ext": "1003",
+        "cell": "647-222-2222",
+        "alt": "416-333-3333",
+        "title": "QA",
+        "email": "peterw@jsrocks.com"
+    },
+    {
+        "firstName": "Kate",
+        "lastName": "Wang",
+        "ext": "1004",
+        "cell": "647-111-1111",
+        "alt": "",
+        "title": "Developer",
+        "email": "katew@jsrocks.com"
+    }
+];
 
 function compare(oldData, newData){
     var result={added:[],deleted:[],modified:[]};
 
     oldData.forEach(function(oItem) {
-        var oldFullname = oItem.firstName + oItem.lastName;
-        newData.forEach(function(nItem, nIndex) {
-            var newFullname = nItem.firstName+nItem.lastName;
-            if(oldFullname === newFullname) {
+        for(var i=0; i<newData.length; i++) {
+            if(oItem.email === newData[i].email) {
                 var temp = {};
-                for(var i in nItem) {
-                    if(nItem[i] != oItem[i]) {
-                        temp[i] = nItem[i];
+                for(var j in newData[i]) {
+                    if(newData[i][j] !== oItem[j]) {
+                        temp[j] = newData[i][j];
                     }
                 }
                 if (Object.getOwnPropertyNames(temp).length !== 0) {
-                    temp.firstName = nItem.firstName;
-                    temp.lastName = nItem.lastName;
+                    temp.firstName = newData[i].firstName;
+                    temp.lastName = newData[i].lastName;
                     result.modified.push(temp);
                 }
-                newData.splice(nIndex, 1);
+                newData.splice(i, 1);
+                break;
             }
-            else if(nIndex===newData.length - 1) {result.deleted.push(oItem);}
-        });
+            else if(i===newData.length - 1) {result.deleted.push(oItem);}
+        }
     });
 
     result.added = newData;
