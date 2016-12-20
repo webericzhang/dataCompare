@@ -104,13 +104,13 @@ var oldData = [
 }*/
 
 function compare(oldData, newData){
-    var result={added:[],deleted:[],modified:[]};
-    var sortData = newData.sort(function(a,b){return a.email > b.email});
+    var result = {added:[],deleted:[],modified:[]},
+        sortData = newData.sort(function(a,b) {return a.email > b.email});
 
     oldData.forEach(function(oItem) {
         var h = sortData.length - 1,
             l = 0;
-        while(l <= h){
+        while(l <= h) {
             var m = Math.floor((h + l) / 2);
             if(oItem.email == sortData[m].email) {
                 var temp = {};
