@@ -19,7 +19,7 @@ module.exports = function compare(oldData, newData){
             if (Object.getOwnPropertyNames(tmp).length !== 0) {
                 tmp.firstName = sortData[i].firstName;
                 tmp.lastName = sortData[i].lastName;
-                result.modified.push(sortData[i]);
+                result.modified.push(tmp);
             }
             i++;
         }

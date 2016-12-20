@@ -20,8 +20,8 @@ function generateData(num){
     return ret;
 }
 
-let oldData = generateData(1000000);
-let newData = generateData(1000000);
+let oldData = generateData(10000);
+let newData = generateData(10000);
 
 newData.splice(0,1);
 newData.splice(8,1,{
