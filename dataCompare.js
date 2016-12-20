@@ -1,40 +1,40 @@
 
 module.exports = function compare(oldData, newData){
     var result = {added:[],deleted:[],modified:[]},
-        sortData = newData.sort((a,b) => {
-            if(a.email>b.email){return 1;}
-            else if(a.email<b.email){return -1;}
-            else {return 0;}
-            });
+        sortData = [],
+        len = 0;
 
-    oldData.forEach((oItem) => {
-        var h = sortData.length - 1,
-            l = 0;
-        while(l <= h) {
-            var m = Math.floor((h + l) / 2);
-            if (oItem.email > sortData[m].email) {l = m + 1;}
-            else if (oItem.email < sortData[m].email) {h = m - 1;}
-            else {
-                let temp = {};
-                for(let i in sortData[m]) {
-                    if(sortData[m][i] !== oItem[i]) {
-                        temp[i+"_old"] = oItem[i];
-                        temp[i] = sortData[m][i];
-                    }
-                }
-                if (Object.getOwnPropertyNames(temp).length !== 0) {
-                    temp.firstName = sortData[m].firstName;
-                    temp.lastName = sortData[m].lastName;
-                    result.modified.push(temp);
-                }
-                sortData.splice(m,1);
-                break;
+    oldData.map(o => o.status = 0);
+    newData.map(n => n.status = 1);
+    sortData = oldData.concat(newData).sort((a,b) => a.email.localeCompare(b.email));
+    len = sortData.length - 1;
+    for (let i=0; i<len; i++) {
+        if (sortData[i].email === sortData[i+1].email) {
+            let tmp = {};
+            let j = (sortData[i].status===1) ? i : i+1;
+            if (sortData[i].ext !== sortData[i+1].ext) { tmp.ext = sortData[j].ext; }
+            if (sortData[i].cell !== sortData[i+1].cell) { tmp.cell = sortData[j].cell; }
+            if (sortData[i].alt !== sortData[i+1].alt) { tmp.alt = sortData[j].alt; }
+            if (sortData[i].title !== sortData[i+1].title) { tmp.title = sortData[j].title; }
+            if (Object.getOwnPropertyNames(tmp).length !== 0) {
+                tmp.firstName = sortData[i].firstName;
+                tmp.lastName = sortData[i].lastName;
+                result.modified.push(sortData[i]);
             }
+            i++;
         }
-        if (l > h) {result.deleted.push(oItem)};
-    });
+        else if (sortData[i].status === 1) {
+            result.added.push(sortData[i]);
+        }
+        else {result.deleted.push(sortData[i]);}
+    }
+    //for last data
+    if (sortData[len].email!==sortData[len-1].email) {
+        if (sortData[sortData.length-1].status === 1) {
+            result.added.push(sortData[len]);
+        }
+        else {result.deleted.push(sortData[len]);}
+    }
 
-    result.added = sortData;
-
-    return result;
-}
+   return result;
+};

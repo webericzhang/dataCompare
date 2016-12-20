@@ -20,8 +20,8 @@ function generateData(num){
     return ret;
 }
 
-let oldData = generateData(100000);
-let newData = generateData(100000);
+let oldData = generateData(1000000);
+let newData = generateData(1000000);
 
 newData.splice(0,1);
 newData.splice(8,1,{
@@ -44,6 +44,7 @@ newData[3].title = tt;
 //console.log(JSON.stringify(newData));
 
 let compare = require('./dataCompare');
+//let compare = require('./dataCompare_binarysearch');
 
 console.time('a');
 var result = compare(oldData, newData);
