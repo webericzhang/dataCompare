@@ -1,15 +1,13 @@
 
-module.exports.compare = compare;
-
-function compare(oldData, newData){
+module.exports = function compare(oldData, newData){
     var result = {added:[],deleted:[],modified:[]},
-        sortData = newData.sort(function(a,b) {
+        sortData = newData.sort((a,b) => {
             if(a.email>b.email){return 1;}
             else if(a.email<b.email){return -1;}
             else {return 0;}
             });
 
-    oldData.forEach(function(oItem) {
+    oldData.forEach((oItem) => {
         var h = sortData.length - 1,
             l = 0;
         while(l <= h) {

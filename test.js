@@ -20,8 +20,8 @@ function generateData(num){
     return ret;
 }
 
-let oldData = generateData(200000);
-let newData = generateData(200000);
+let oldData = generateData(100000);
+let newData = generateData(100000);
 
 newData.splice(0,1);
 newData.splice(8,1,{
@@ -46,7 +46,7 @@ newData[3].title = tt;
 let compare = require('./dataCompare');
 
 console.time('a');
-var result = compare.compare(oldData, newData);
+var result = compare(oldData, newData);
 console.timeEnd('a');
 
 console.log(result);
