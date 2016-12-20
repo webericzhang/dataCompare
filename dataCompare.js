@@ -3,9 +3,8 @@
  */
 
 var rf=require("fs");
-//var oldData=JSON.parse(rf.readFileSync("data/oldData.json","utf-8"));
-//var newData=JSON.parse(rf.readFileSync("data/newData.json","utf-8"));
-
+var oldData=JSON.parse(rf.readFileSync("data/oldData.json","utf-8"));
+var newData=JSON.parse(rf.readFileSync("data/newData.json","utf-8"));
 /*
 var oldData = [
         {
@@ -75,67 +74,7 @@ var oldData = [
         }
     ];
 */
-
-var oldData = [
-    {
-        "firstName": "Tom",
-        "lastName": "Zhang",
-        "ext": "1001",
-        "cell": "416-000-0000",
-        "alt": "",
-        "title": "Manager",
-        "email": "tomz@jsrocks.com"
-    },
-    {
-        "firstName": "Peter",
-        "lastName": "Wang",
-        "ext": "1003",
-        "cell": "647-222-2222",
-        "alt": "416-333-3333",
-        "title": "QA",
-        "email": "peterw@jsrocks.com"
-    },
-    {
-        "firstName": "Simon",
-        "lastName": "Lee",
-        "ext": "1004",
-        "cell": "647-111-1111",
-        "alt": "416-1111-1111",
-        "title": "QA",
-        "email": "simonl@jsrocks.com"
-    }
-];
-var newData = [
-    {
-        "firstName": "Tom",
-        "lastName": "Zhang",
-        "ext": "1006",
-        "cell": "416-000-0002",
-        "alt": "416-456-4566",
-        "title": "Manager",
-        "email": "tomz@jsrocks.com"
-    },
-    {
-        "firstName": "Peter",
-        "lastName": "Wang",
-        "ext": "1003",
-        "cell": "647-222-2222",
-        "alt": "416-333-3333",
-        "title": "QA",
-        "email": "peterw@jsrocks.com"
-    },
-    {
-        "firstName": "Kate",
-        "lastName": "Wang",
-        "ext": "1004",
-        "cell": "647-111-1111",
-        "alt": "",
-        "title": "Developer",
-        "email": "katew@jsrocks.com"
-    }
-];
-
-function compare(oldData, newData){
+/*function compare(oldData, newData){
     var result={added:[],deleted:[],modified:[]};
 
     oldData.forEach(function(oItem) {
@@ -160,6 +99,42 @@ function compare(oldData, newData){
     });
 
     result.added = newData;
+
+    return result;
+}*/
+
+function compare(oldData, newData){
+    var result={added:[],deleted:[],modified:[]};
+    var sortData = newData.sort(function(a,b){return a.email > b.email});
+
+    oldData.forEach(function(oItem) {
+        var h = sortData.length - 1,
+            l = 0;
+        while(l <= h){
+            var m = Math.floor((h + l) / 2);
+            if(oItem.email == sortData[m].email) {
+                var temp = {};
+                for(var i in sortData[m]) {
+                    if(sortData[m][i] !== oItem[i]) {
+                        temp[i+"_old"] = oItem[i];
+                        temp[i] = sortData[m][i];
+                    }
+                }
+                if (Object.getOwnPropertyNames(temp).length !== 0) {
+                    temp.firstName = sortData[m].firstName;
+                    temp.lastName = sortData[m].lastName;
+                    result.modified.push(temp);
+                }
+                sortData.splice(m,1);
+                break;
+            }
+            else if(oItem.email > sortData[m].email) {l = m + 1;}
+            else {h = m - 1;}
+        }
+        if (l > h) {result.deleted.push(oItem)};
+    });
+
+    result.added = sortData;
 
     return result;
 }
