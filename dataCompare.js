@@ -1,40 +1,46 @@
+function quickSort(data,result) {
+    var left = [],
+        right = [],
+        mid = data[0],
+        isExist = false;
+
+    if (data.length === 0) { return []; }
+    for (let i = 1; i < data.length; i++) {
+        if(data[i].email === mid.email) {
+            isExist = true;
+            let tmp = {},
+                j = (data[i].status===1) ? data[i] : mid;
+                k = (data[i].status===1) ? mid : data[i];
+            if (data[i].ext !== mid.ext) { tmp.ext_old = k.ext; tmp.ext = j.ext; }
+            if (data[i].cell !== mid.cell) { tmp.cell_old = k.cell; tmp.cell = j.cell; }
+            if (data[i].alt !== mid.alt) { tmp.alt_old = k.alt; tmp.alt = j.alt; }
+            if (data[i].title !== mid.title) { tmp.title_old = k.title; tmp.title = j.title; }
+            if (Object.getOwnPropertyNames(tmp).length !== 0) {
+                tmp.firstName = mid.firstName;
+                tmp.lastName = mid.lastName;
+                result.modified.push(tmp);
+            }
+        }
+        else if(data[i].email < mid.email) { left.push(data[i]); }
+        else { right.push(data[i]); }
+    }
+    return isExist ? quickSort(left,result).concat(quickSort(right,result)) : quickSort(left,result).concat(mid, quickSort(right,result));
+}
 
 module.exports = function compare(oldData, newData){
-    var result = {added:[],deleted:[],modified:[]},
+    var result = { added:[],deleted:[],modified:[] },
+        mergeData = [],
         sortData = [],
         len = 0;
 
     oldData.forEach(o => o.status = 0);
     newData.forEach(n => n.status = 1);
-    sortData = oldData.concat(newData).sort((a,b) => a.email.localeCompare(b.email));
-    len = sortData.length - 1;
-    for (let i=0; i<len; i++) {
-        if (sortData[i].email === sortData[i+1].email) {
-            let tmp = {};
-            let j = (sortData[i].status===1) ? i : i+1;
-            if (sortData[i].ext !== sortData[i+1].ext) { tmp.ext = sortData[j].ext; }
-            if (sortData[i].cell !== sortData[i+1].cell) { tmp.cell = sortData[j].cell; }
-            if (sortData[i].alt !== sortData[i+1].alt) { tmp.alt = sortData[j].alt; }
-            if (sortData[i].title !== sortData[i+1].title) { tmp.title = sortData[j].title; }
-            if (Object.getOwnPropertyNames(tmp).length !== 0) {
-                tmp.firstName = sortData[i].firstName;
-                tmp.lastName = sortData[i].lastName;
-                result.modified.push(tmp);
-            }
-            i++;
-        }
-        else if (sortData[i].status === 1) {
-            result.added.push(sortData[i]);
-        }
-        else {result.deleted.push(sortData[i]);}
-    }
-    //for last data
-    if (sortData[len].email!==sortData[len-1].email) {
-        if (sortData[sortData.length-1].status === 1) {
-            result.added.push(sortData[len]);
-        }
-        else {result.deleted.push(sortData[len]);}
-    }
+    mergeData = oldData.concat(newData);
+    sortData = quickSort(mergeData, result);
+    sortData.forEach((item) => {
+        if (item.status === 1) { result.added.push(item); }
+        else { result.deleted.push(item); }
+    });
 
    return result;
 };
