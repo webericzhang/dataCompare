@@ -4,8 +4,8 @@ module.exports = function compare(oldData, newData){
         sortData = [],
         len = 0;
 
-    oldData.map(o => o.status = 0);
-    newData.map(n => n.status = 1);
+    oldData.forEach(o => o.status = 0);
+    newData.forEach(n => n.status = 1);
     sortData = oldData.concat(newData).sort((a,b) => a.email.localeCompare(b.email));
     len = sortData.length - 1;
     for (let i=0; i<len; i++) {
