@@ -24,23 +24,23 @@ function quickSort(data,result) {
         else if(data[i].email < mid.email) { left.push(data[i]); }
         else { right.push(data[i]); }
     }
-    return isExist ? quickSort(left,result).concat(quickSort(right,result)) : quickSort(left,result).concat(mid, quickSort(right,result));
+    if (!isExist) {
+        if (mid.status === 1) { result.added.push(mid); }
+        else { result.deleted.push(mid); }
+    }
+
+    return quickSort(left,result).concat(quickSort(right,result));
 }
 
 module.exports = function compare(oldData, newData){
     var result = { added:[],deleted:[],modified:[] },
-        mergeData = [],
-        sortData = [],
-        len = 0;
+        mergeData = [];
 
     oldData.forEach(o => o.status = 0);
     newData.forEach(n => n.status = 1);
     mergeData = oldData.concat(newData);
-    sortData = quickSort(mergeData, result);
-    sortData.forEach((item) => {
-        if (item.status === 1) { result.added.push(item); }
-        else { result.deleted.push(item); }
-    });
+
+    quickSort(mergeData, result);
 
    return result;
 };
