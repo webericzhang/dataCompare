@@ -9,7 +9,7 @@ function quickSort(data,result) {
         if(data[i].email === mid.email) {
             isExist = true;
             let tmp = {},
-                j = (data[i].status===1) ? data[i] : mid;
+                j = (data[i].status===1) ? data[i] : mid,
                 k = (data[i].status===1) ? mid : data[i];
             if (data[i].ext !== mid.ext) { tmp.ext_old = k.ext; tmp.ext = j.ext; }
             if (data[i].cell !== mid.cell) { tmp.cell_old = k.cell; tmp.cell = j.cell; }
