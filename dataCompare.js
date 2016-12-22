@@ -33,14 +33,11 @@ quickSort = (data,result) => {
 };
 
 module.exports = compare = (oldData, newData) => {
-    let result = { added:[],deleted:[],modified:[] },
-        mergeData = [];
+    let result = { added:[],deleted:[],modified:[] };
 
     oldData.forEach(o => o.status = 0);
     newData.forEach(n => n.status = 1);
-    mergeData = oldData.concat(newData);
-
-    quickSort(mergeData, result);
+    quickSort(oldData.concat(newData), result);
 
    return result;
 };
