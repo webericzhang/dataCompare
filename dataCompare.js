@@ -1,5 +1,5 @@
-function quickSort(data,result) {
-    var left = [],
+quickSort = (data,result) => {
+    let left = [],
         right = [],
         mid = data[0],
         isExist = false;
@@ -30,10 +30,10 @@ function quickSort(data,result) {
     }
 
     return quickSort(left,result).concat(quickSort(right,result));
-}
+};
 
-module.exports = function compare(oldData, newData){
-    var result = { added:[],deleted:[],modified:[] },
+module.exports = compare = (oldData, newData) => {
+    let result = { added:[],deleted:[],modified:[] },
         mergeData = [];
 
     oldData.forEach(o => o.status = 0);
